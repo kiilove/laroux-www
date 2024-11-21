@@ -1,44 +1,39 @@
-// src/App.js
-import { useEffect } from "react";
-import { useApp } from "./context/AppContext";
-import BackgroundVideo from "./components/layout/BackgroundVideo";
-import Navbar from "./components/layout/Navbar";
-import Hero from "./components/sections/Hero";
-import Events from "./components/sections/Events";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import MainApp from "./components/pages/MainApp";
+import AdminDashboard from "./components/pages/AdminDashboard";
+import { AuthProvider } from "./context/AuthProvider";
+import PrivateRoute from "./components/utils/PrivateRoute";
 
-function App() {
-  const { actions } = useApp();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      actions.setScrolled(window.scrollY > 50);
-
-      // 현재 섹션 감지
-      const sections = ["home", "events", "coupons", "about"];
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            actions.setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [actions]);
-
+const App = () => {
   return (
-    <div className="relative">
-      <BackgroundVideo />
-      <Navbar />
-      <Hero />
-      <Events />
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* 기존 App 내용 */}
+          <Route path="/" element={<MainApp />} />
+
+          {/* 어드민 대시보드 */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <AdminDashboard />
+              </PrivateRoute>
+            }
+          />
+
+          {/* 잘못된 URL은 홈으로 리다이렉트 */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
-}
+};
 
 export default App;

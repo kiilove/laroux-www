@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <!-- 메인 페이지 -->
+  <url>
+    <loc>https://www.laroux.co.kr</loc>
+    <lastmod>2024-11-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- 팝업스토어 섹션 -->
+  <url>
+    <loc>https://www.laroux.co.kr/#events</loc>
+    <lastmod>2024-11-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 쿠폰 섹션 -->
+  <url>
+    <loc>https://www.laroux.co.kr/#coupons</loc>
+    <lastmod>2024-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 회사 소개 섹션 -->
+  <url>
+    <loc>https://www.laroux.co.kr/#about</loc>
+    <lastmod>2024-11-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
