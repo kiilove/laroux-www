@@ -1,34 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Input, Button, Typography, Alert } from "antd";
-
+import { Form, Input, Button, Typography } from "antd";
 
 const { Title } = Typography;
 
 const Login = () => {
-
   const navigate = useNavigate();
 
   const handleLogin = async (values) => {
-    // try {
-    //   await logInWithEmail(values.email, values.password, (user) => {
-    //     console.log("로그인 성공:", user);
-    //     navigate("/dashboard");
-    //   });
-    // } catch (error) {
-    //   console.error("로그인 실패:", error);
-    // }
+    // 로그인 처리
   };
 
   const handleGoogleLogin = async () => {
-    // try {
-    //   await signInWithGoogle((user) => {
-    //     console.log("Google 로그인 성공:", user);
-    //     navigate("/dashboard");
-    //   });
-    // } catch (error) {
-    //   console.error("Google 로그인 실패:", error);
-    // }
+    // Google 로그인 처리
   };
 
   return (
@@ -76,14 +60,21 @@ const Login = () => {
       <Button type="default" onClick={handleGoogleLogin} block>
         Google 계정으로 로그인
       </Button>
-      {authError && (
-        <Alert
-          message={authError}
-          type="error"
-          showIcon
-          style={{ marginTop: 20 }}
-        />
-      )}
+      <Button
+        type="link"
+        onClick={() => navigate("/signup")}
+        style={{ marginTop: 16 }}
+        block
+      >
+        회원가입
+      </Button>
+      <Button
+        type="link"
+        onClick={() => alert("비밀번호 찾기 기능 준비 중입니다.")}
+        block
+      >
+        비밀번호 찾기
+      </Button>
     </div>
   );
 };

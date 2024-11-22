@@ -1,31 +1,23 @@
 import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { auth, db } from "../services/firebase";
-import { doc, setDoc } from "firebase/firestore";
-import dayjs from "dayjs";
+import { auth } from "../../services/firebase";
 
 const useGoogleAuth = () => {
   const [authError, setAuthError] = useState(null);
 
-  const signUpWithGoogle = async (callback) => {
+  const signUpWithGoogle = async () => {
     setAuthError(null);
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Firestore에 사용자 저장
-      const userDoc = doc(db, "members", user.uid);
-      await setDoc(userDoc, {
-        email: user.email,
-        displayName: user.displayName,
-        createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-      });
-
-      if (callback) callback(user);
+      // Google 로그인 성공 시 사용자 정보 반환
+      return user;
     } catch (error) {
       setAuthError("Google 회원가입 중 오류가 발생했습니다.");
       console.error(error);
+      throw error; // 에러를 상위로 전달
     }
   };
 

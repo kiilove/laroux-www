@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FacebookAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { auth } from "../services/firebase";
+import { auth } from "../../services/firebase";
 
 const useFacebookAuth = () => {
   const [authError, setAuthError] = useState(null);

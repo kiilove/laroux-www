@@ -5,7 +5,7 @@ import {
   getAuth,
   signOut,
 } from "firebase/auth";
-import { auth } from "../services/firebase";
+import { auth } from "../../services/firebase";
 
 const useEmailAuth = () => {
   const [authError, setAuthError] = useState(null);

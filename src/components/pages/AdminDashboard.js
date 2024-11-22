@@ -1,10 +1,11 @@
 import React from "react";
+import AnalyticsDashboard from "../dashboard/AnalyticsDashboard";
 
 const AdminDashboard = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>어드민 대시보드</h1>
-      <p>이곳은 관리자 전용 대시보드입니다.</p>
+      <AnalyticsDashboard />
     </div>
   );
 };
