@@ -7,14 +7,15 @@ export function useStorageUpload() {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
 
-  function uploadFile(path, file, metadata = null) {
+  function uploadFile(path, file, options = {}) {
+    const { onProgress } = options; // 콜백 전달
     return new Promise((resolve, reject) => {
       setLoading(true);
       setProgress(0);
       setError(null);
 
       const storageRef = ref(storage, path);
-      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
         "state_changed",
@@ -22,6 +23,9 @@ export function useStorageUpload() {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setProgress(progress);
+          if (onProgress) {
+            onProgress(progress); // 프로그레스 콜백 호출
+          }
         },
         (error) => {
           setError(error);

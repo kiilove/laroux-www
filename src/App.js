@@ -12,6 +12,7 @@ import PrivateRoute from "./components/utils/PrivateRoute";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import OAuth2Callback from "./components/auth/OAuth2Callback";
+import BlogEditor from "./components/mediaBlog/BlogEditor";
 
 const App = () => {
   return (
@@ -32,7 +33,10 @@ const App = () => {
                 <AdminDashboard />
               </PrivateRoute>
             }
-          />
+          >
+            {/* AdminDashboard의 서브 메뉴 경로 */}
+            <Route path="newblog" element={<BlogEditor />} />
+          </Route>
 
           {/* 잘못된 URL은 홈으로 리다이렉트 */}
           <Route path="*" element={<Navigate to="/" />} />
