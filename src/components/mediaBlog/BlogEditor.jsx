@@ -265,8 +265,7 @@ const BlogEditor = () => {
           className="border rounded-lg bg-white flex-grow overflow-y-auto h-full"
           style={{
             padding: "10px",
-            minHeight: "calc(100vh - 2rem)",
-            maxHeight: "calc(100vh - 1rem)",
+
             overflow: "hidden",
           }}
         >
