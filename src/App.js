@@ -13,17 +13,28 @@ import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import OAuth2Callback from "./components/auth/OAuth2Callback";
 import BlogEditor from "./components/mediaBlog/BlogEditor";
+import AboutSection from "./components/sections/AboutSection";
+import Events from "./components/sections/Events";
+
+const Home = () => (
+  <>
+    <MainApp />
+    <AboutSection />
+    <Events />
+  </>
+);
 
 const App = () => {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          {/* 기존 App 내용 */}
-          <Route path="/" element={<MainApp />} />
+          {/* 메인 페이지 */}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/oauth2callback" element={<OAuth2Callback />} />
+          <Route path="/about" element={<AboutSection />} />
 
           {/* 어드민 대시보드 */}
           <Route

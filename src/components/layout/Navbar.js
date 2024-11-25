@@ -1,8 +1,9 @@
+import { Link } from "react-scroll"; // React Scroll 사용
 import { useApp } from "../../context/AppContext";
 
-const Navbar = () => {
+const Navbar = ({ scrollToSection }) => {
   const { state } = useApp();
-  const { isScrolled, activeSection } = state;
+  const { isScrolled } = state;
 
   const navClasses = `fixed w-full z-50 transition-all duration-300 ${
     isScrolled ? "bg-white shadow-lg py-3" : "bg-transparent py-6"
@@ -18,38 +19,27 @@ const Navbar = () => {
     <nav className={navClasses}>
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex justify-between items-center">
-          <h1
-            className={`text-3xl font-bold ${linkClasses}`}
-            style={{ fontFamily: "sans-serif" }}
-          >
-            la' ROUX
-          </h1>
+          <h1 className={`text-3xl font-bold ${linkClasses}`}>la' ROUX</h1>
 
           <div className="hidden md:flex space-x-8">
-            <a
-              href="#events"
-              className={`${linkClasses} ${
-                activeSection === "events" ? "font-bold" : ""
-              }`}
+            <button
+              onClick={() => scrollToSection("hero")}
+              className={linkClasses}
             >
-              행사 일정
-            </a>
-            <a
-              href="#coupons"
-              className={`${linkClasses} ${
-                activeSection === "coupons" ? "font-bold" : ""
-              }`}
-            >
-              쿠폰 다운로드
-            </a>
-            <a
-              href="#about"
-              className={`${linkClasses} ${
-                activeSection === "about" ? "font-bold" : ""
-              }`}
+              홈
+            </button>
+            <button
+              onClick={() => scrollToSection("about")}
+              className={linkClasses}
             >
               회사 소개
-            </a>
+            </button>
+            <button
+              onClick={() => scrollToSection("events")}
+              className={linkClasses}
+            >
+              행사 일정
+            </button>
           </div>
         </div>
       </div>
