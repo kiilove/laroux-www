@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import Navbar from "../layout/Navbar";
 import HeroSection from "../about/HeroSection";
+import BrandStorySection from "../about/BrandStroySection";
+import SloganSection from "../about/SloganSection";
 
-const AboutSection = ({ active }) => {
-  // active를 상위에서 받아옴
+const AboutSection = () => {
+  const [isHeroEnd, setIsHeroEnd] = useState(false);
+  const heroEnd = () => {
+    setIsHeroEnd(true);
+  };
   return (
-    <div>
-      <HeroSection active={active} /> {/* 받은 active를 HeroSection으로 전달 */}
-      {/* Add more sections or components here if needed */}
+    <div className="relative">
+      {/* 스크롤 영역 확보 */}
+      <div style={{ height: "250vh" }}>
+        <HeroSection onAnimationEnd={heroEnd} />
+      </div>
+      <div style={{ height: "120vh" }}>
+        <BrandStorySection />
+      </div>
+      <div style={{ height: "250vh" }}>
+        <SloganSection />
+      </div>
     </div>
   );
 };

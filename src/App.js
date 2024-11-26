@@ -16,21 +16,13 @@ import BlogEditor from "./components/mediaBlog/BlogEditor";
 import AboutSection from "./components/sections/AboutSection";
 import Events from "./components/sections/Events";
 
-const Home = () => (
-  <>
-    <MainApp />
-    <AboutSection />
-    <Events />
-  </>
-);
-
 const App = () => {
   return (
     <AuthProvider>
       <Router>
         <Routes>
           {/* 메인 페이지 */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<MainApp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/oauth2callback" element={<OAuth2Callback />} />

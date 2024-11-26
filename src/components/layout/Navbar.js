@@ -1,9 +1,11 @@
 import { Link } from "react-scroll"; // React Scroll 사용
 import { useApp } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ scrollToSection }) => {
   const { state } = useApp();
   const { isScrolled } = state;
+  const navigate = useNavigate();
 
   const navClasses = `fixed w-full z-50 transition-all duration-300 ${
     isScrolled ? "bg-white shadow-lg py-3" : "bg-transparent py-6"
@@ -28,10 +30,7 @@ const Navbar = ({ scrollToSection }) => {
             >
               홈
             </button>
-            <button
-              onClick={() => scrollToSection("about")}
-              className={linkClasses}
-            >
+            <button onClick={() => navigate("/about")} className={linkClasses}>
               회사 소개
             </button>
             <button

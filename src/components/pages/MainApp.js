@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useApp } from "../../context/AppContext"; // AppContext를 가져옴
-import BackgroundVideo from "../layout/BackgroundVideo";
 import Navbar from "../layout/Navbar";
 import HeroSection from "../sections/HeroSection"; // HeroSection 이름 명확히 사용
 import Events from "../sections/Events";
-import AboutSection from "../sections/AboutSection"; // AboutSection 불러오기
 import { Element, scroller } from "react-scroll"; // React Scroll의 Element와 scroller 사용
 
 const MainApp = () => {
@@ -42,11 +40,6 @@ const MainApp = () => {
       <Element name="hero">
         <HeroSection active={activeSection === "hero"} />
         {/* HeroSection에 active 전달 */}
-      </Element>
-
-      <Element name="about">
-        <AboutSection active={activeSection === "about"} />
-        {/* AboutSection에 active 전달 */}
       </Element>
 
       <Element name="events">
