@@ -6,7 +6,8 @@ const SloganSection = () => {
     {
       headline: "그녀를 평온하게 하라",
       subtext: "라루의 철학은 내면과 외면의 아름다움을 모두 아우릅니다.",
-      image: "path_to_calm_image.jpg", // 실제 이미지 경로로 변경 필요
+      image:
+        "https://firebasestorage.googleapis.com/v0/b/laroux-1a94f.firebasestorage.app/o/assets%2Fabout%2Fan_artistic_oil_painting_inspired_by_the_empress_card_from_the_tarot_a_regal_woman_sits_gracefully__d1zixxdss2ec1gzkf5va_1.png?alt=media&token=fb654d3e-cf45-4b5e-9032-2053fca86dc8", // 실제 이미지 경로로 변경 필요
       direction: "right", // 애니메이션 방향
     },
     {
