@@ -3,12 +3,16 @@ import { ChevronDown } from "lucide-react";
 import Button from "../common/Button";
 import BackgroundVideo from "../layout/BackgroundVideo"; // BackgroundVideo 불러오기
 import logoWhite from "../assets/logos/logo_blank_white.png";
-import laroux01 from "../assets/videos/laroux_01.mp4";
-import laroux02 from "../assets/videos/laroux_02.mp4";
-import laroux03 from "../assets/videos/laroux_03.mp4";
-import laroux04 from "../assets/videos/laroux_04.mp4";
 
 const HeroSection = ({ active }) => {
+  const laroux01 =
+    "https://firebasestorage.googleapis.com/v0/b/laroux-1a94f.firebasestorage.app/o/assets%2Fvideo%2Flaroux_01.mp4?alt=media&token=863d0948-efc4-412b-acf8-548e1681db7c";
+  const laroux02 =
+    "https://firebasestorage.googleapis.com/v0/b/laroux-1a94f.firebasestorage.app/o/assets%2Fvideo%2Flaroux_02.mp4?alt=media&token=b2202139-cd7e-40fa-bebb-d9139329b0f5";
+  const laroux03 =
+    "https://firebasestorage.googleapis.com/v0/b/laroux-1a94f.firebasestorage.app/o/assets%2Fvideo%2Flaroux_03.mp4?alt=media&token=461ac310-e083-435f-badf-4b282addf38b";
+  const laroux04 =
+    "https://firebasestorage.googleapis.com/v0/b/laroux-1a94f.firebasestorage.app/o/assets%2Fvideo%2Flaroux_04.mp4?alt=media&token=53bbfe19-dd34-4bbd-8d5c-15b81cffd51a";
   // 비디오 리스트와 현재 비디오 상태
   const videos = useMemo(() => [laroux01, laroux02, laroux03, laroux04], []);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);

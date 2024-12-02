@@ -16,6 +16,7 @@ import BlogEditor from "./components/mediaBlog/BlogEditor";
 import AboutSection from "./components/sections/AboutSection";
 import Events from "./components/sections/Events";
 import { DeviceProvider } from "./context/DeviceContext";
+import AddPopupEvent from "./components/popupEvent/AddPopupEvent";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
             >
               {/* AdminDashboard의 서브 메뉴 경로 */}
               <Route path="newblog" element={<BlogEditor />} />
+              <Route path="newpopupevent" element={<AddPopupEvent />} />
             </Route>
 
             {/* 잘못된 URL은 홈으로 리다이렉트 */}
