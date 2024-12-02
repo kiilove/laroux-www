@@ -48,9 +48,10 @@ export function useFirestoreQuery() {
       let baseQuery = collection(db, collectionName);
       let queryConstraints = [];
 
+      console.log(conditions);
       // 조건 추가
       conditions.forEach((condition) => {
-        queryConstraints.push(where(...condition));
+        queryConstraints.push(condition);
       });
 
       // 정렬 추가

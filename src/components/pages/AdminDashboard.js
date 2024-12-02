@@ -21,6 +21,11 @@ const AdminDashboard = () => {
           label: "행사등록",
           onClick: () => navigate("/dashboard/newpopupevent"),
         },
+        {
+          key: "event-list",
+          label: "행사관리",
+          onClick: () => navigate("/dashboard/popuplist"),
+        },
         { key: "event-end", label: "행사종료" },
         {
           key: "new-blog",

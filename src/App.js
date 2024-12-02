@@ -12,11 +12,12 @@ import PrivateRoute from "./components/utils/PrivateRoute";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import OAuth2Callback from "./components/auth/OAuth2Callback";
-import BlogEditor from "./components/mediaBlog/BlogEditor";
 import AboutSection from "./components/sections/AboutSection";
 import Events from "./components/sections/Events";
 import { DeviceProvider } from "./context/DeviceContext";
 import AddPopupEvent from "./components/popupEvent/AddPopupEvent";
+import PopupEventList from "./components/popupEvent/PopupEventList";
+import PopupEventDetail from "./components/popupEvent/PopupEventDetail";
 
 const App = () => {
   return (
@@ -30,7 +31,7 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/oauth2callback" element={<OAuth2Callback />} />
             <Route path="/about" element={<AboutSection />} />
-
+            <Route path="/events/:id" element={<PopupEventDetail />} />
             {/* 어드민 대시보드 */}
             <Route
               path="/dashboard"
@@ -41,8 +42,9 @@ const App = () => {
               }
             >
               {/* AdminDashboard의 서브 메뉴 경로 */}
-              <Route path="newblog" element={<BlogEditor />} />
+
               <Route path="newpopupevent" element={<AddPopupEvent />} />
+              <Route path="popuplist" element={<PopupEventList />} />
             </Route>
 
             {/* 잘못된 URL은 홈으로 리다이렉트 */}

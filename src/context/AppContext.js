@@ -1,37 +1,18 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import { useFirestoreQuery } from "../hooks/useFirestore/index";
+import { where } from "firebase/firestore";
+import { message } from "antd";
 
 const initialState = {
   isScrolled: false,
-  events: [
-    {
-      id: 1,
-      title: "라루 12월 첫 단독 팝업",
-      startDate: "2024.12.01",
-      endDate: "2024.12.30",
-      location: "금정역SKV1 1차 1층",
-      addr: "경기도 안양시 동안구 엘에스로 142 C117호(호계동, 금정역SKV1 1차)",
-    },
-    {
-      id: 2,
-      title: "일산 현대백화점 팝업행사",
-      startDate: "2024.11.25",
-      endDate: "2024.12.08",
-      location: "현대백화점 일산킨텍스 6층",
-    },
-    {
-      id: 3,
-      title: "2025 겨울/봄 프리뷰",
-      startDate: "2024.12.20",
-      endDate: "2025.01.03",
-      location: "갤러리아백화점 타임월드 3층(대전)",
-    },
-  ],
+  events: [], // 초기 events는 빈 배열
   activeSection: "home",
 };
 
 const ACTIONS = {
   SET_SCROLLED: "SET_SCROLLED",
   SET_ACTIVE_SECTION: "SET_ACTIVE_SECTION",
+  SET_EVENTS: "SET_EVENTS", // 새로운 액션 추가
 };
 
 function appReducer(state, action) {
@@ -40,6 +21,8 @@ function appReducer(state, action) {
       return { ...state, isScrolled: action.payload };
     case ACTIONS.SET_ACTIVE_SECTION:
       return { ...state, activeSection: action.payload };
+    case ACTIONS.SET_EVENTS: // events 상태를 업데이트
+      return { ...state, events: action.payload };
     default:
       return state;
   }
@@ -48,6 +31,7 @@ function appReducer(state, action) {
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
+  const eventsQuery = useFirestoreQuery();
   const [state, dispatch] = useReducer(appReducer, initialState);
 
   const actions = {
@@ -55,7 +39,31 @@ export function AppProvider({ children }) {
       dispatch({ type: ACTIONS.SET_SCROLLED, payload: isScrolled }),
     setActiveSection: (section) =>
       dispatch({ type: ACTIONS.SET_ACTIVE_SECTION, payload: section }),
+    setEvents: (events) =>
+      dispatch({ type: ACTIONS.SET_EVENTS, payload: events }), // events 상태 업데이트 액션
   };
+
+  const fetchEvents = async () => {
+    const conditions = [where("isActive", "==", true)];
+
+    try {
+      await eventsQuery.getDocuments(
+        "popupEvents",
+        (data) => {
+          console.log("Fetched events:", data);
+          actions.setEvents(data); // 가져온 데이터를 상태에 저장
+        },
+        { conditions, limitNumber: 3 }
+      );
+    } catch (error) {
+      message.error("데이터 로드에 문제가 발생했습니다.");
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents(); // 컴포넌트가 마운트될 때 이벤트 가져오기
+  }, []);
 
   return (
     <AppContext.Provider value={{ state, actions }}>

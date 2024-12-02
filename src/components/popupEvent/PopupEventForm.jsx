@@ -1,6 +1,9 @@
 import React, { useCallback } from "react";
 import { Input, DatePicker, Button } from "antd";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Quill의 기본 테마
 import { useFormHandler } from "../../hooks/useForm/index";
+import dayjs from "dayjs";
 
 const validate = (values) => {
   const errors = {};
@@ -32,10 +35,32 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
     uploadPath: "popupEvents", // 업로드 경로 설정
   });
 
-  // useCallback으로 handleFormSubmit 참조 고정
+  // 리치 텍스트 입력 핸들러
+  const handleRichTextChange = (content) => {
+    handleChange({
+      target: {
+        name: "description",
+        value: content,
+      },
+    });
+  };
+
+  // 제출 핸들러
   const handleFormSubmit = useCallback(
-    (e) => handleSubmit(onSubmit)(e),
-    [onSubmit, handleSubmit]
+    async (e) => {
+      e.preventDefault();
+      const formattedValues = {
+        ...formValues,
+        startDate: formValues.startDate
+          ? dayjs(formValues.startDate).format("YYYY-MM-DD")
+          : "",
+        endDate: formValues.endDate
+          ? dayjs(formValues.endDate).format("YYYY-MM-DD")
+          : "",
+      };
+      await handleSubmit(onSubmit, formattedValues);
+    },
+    [formValues, handleSubmit, onSubmit]
   );
 
   return (
@@ -52,16 +77,18 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
         {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
       </div>
 
-      {/* 설명 입력 */}
+      {/* 설명 입력 (Rich Text) */}
       <div>
         <label className="block font-semibold mb-1">행사 설명</label>
-        <Input.TextArea
-          name="description"
+        <ReactQuill
           value={formValues.description}
-          onChange={handleChange}
-          rows={4}
+          onChange={handleRichTextChange}
           placeholder="행사에 대한 설명을 입력하세요"
+          className="bg-white"
         />
+        {errors.description && (
+          <p className="text-red-500 text-sm">{errors.description}</p>
+        )}
       </div>
 
       {/* 위치 입력 */}
@@ -97,7 +124,7 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
         <div>
           <label className="block font-semibold mb-1">시작일</label>
           <DatePicker
-            value={formValues.startDate}
+            value={formValues.startDate ? dayjs(formValues.startDate) : null}
             onChange={(date) => handleDateChange("startDate", date)}
             format="YYYY-MM-DD"
             className="w-full"
@@ -109,7 +136,7 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
         <div>
           <label className="block font-semibold mb-1">종료일</label>
           <DatePicker
-            value={formValues.endDate}
+            value={formValues.endDate ? dayjs(formValues.endDate) : null}
             onChange={(date) => handleDateChange("endDate", date)}
             format="YYYY-MM-DD"
             className="w-full"

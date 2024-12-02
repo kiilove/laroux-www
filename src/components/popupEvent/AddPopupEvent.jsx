@@ -3,15 +3,16 @@ import PopupEventForm from "./PopupEventForm";
 import { useFirestoreAddData } from "../../hooks/useFirestore/index";
 
 const AddPopupEvent = () => {
+  const addPopup = useFirestoreAddData();
   const handleSubmit = async (data) => {
     console.log(data);
-    // try {
-    //   await useFirestoreAddData.addData("popupEvents", data); // Firestore에 추가
-    //   alert("팝업 행사가 저장되었습니다.");
-    // } catch (error) {
-    //   console.error("저장 실패:", error);
-    //   alert("저장 중 오류가 발생했습니다.");
-    // }
+    try {
+      await addPopup.addData("popupEvents", data); // Firestore에 추가
+      alert("팝업 행사가 저장되었습니다.");
+    } catch (error) {
+      console.error("저장 실패:", error);
+      alert("저장 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -21,8 +22,8 @@ const AddPopupEvent = () => {
         description: "",
         location: "",
         address: "",
-        startDate: null,
-        endDate: null,
+        startDate: "",
+        endDate: "",
         images: [],
       }}
       onSubmit={handleSubmit}
