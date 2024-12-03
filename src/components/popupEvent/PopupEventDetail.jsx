@@ -4,7 +4,8 @@ import DOMPurify from "dompurify";
 import "react-quill/dist/quill.snow.css"; // Quill의 기본 테마
 import { useFirestoreGetDocument } from "../../hooks/useFirestore";
 import { message, Spin, Button, Carousel } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, CopyOutlined } from "@ant-design/icons";
+import { copyToClipboard } from "../utils/copyClipboard";
 
 const PopupEventDetail = () => {
   const { id } = useParams();
@@ -120,10 +121,23 @@ const PopupEventDetail = () => {
               />
             </div>
 
-            <div className="mt-4 text-sm text-gray-600">
-              <p>위치: {eventInfo?.location}</p>
-              <p>주소: {eventInfo?.address}</p>
-              <p>
+            <div
+              className="mt-4 text-base text-white p-4 rounded-md"
+              style={{ backgroundColor: "#971f33" }}
+            >
+              <p className="mb-2 font-bold">위치: {eventInfo?.location}</p>
+              <p className="mb-2 font-bold">
+                주소: {eventInfo?.address}
+                <span className="ml-2">
+                  <Button
+                    icon={<CopyOutlined />}
+                    onClick={() => copyToClipboard(eventInfo?.address)}
+                  >
+                    주소복사
+                  </Button>
+                </span>
+              </p>
+              <p className="font-bold">
                 날짜: {eventInfo?.startDate} ~ {eventInfo?.endDate}
               </p>
             </div>
