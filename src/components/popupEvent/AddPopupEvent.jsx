@@ -1,6 +1,7 @@
 import React from "react";
 import PopupEventForm from "./PopupEventForm";
 import { useFirestoreAddData } from "../../hooks/useFirestore/index";
+import dayjs from "dayjs";
 
 const AddPopupEvent = () => {
   const addPopup = useFirestoreAddData();
@@ -25,6 +26,8 @@ const AddPopupEvent = () => {
         startDate: "",
         endDate: "",
         images: [],
+        isActive: true,
+        createdAt: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
       }}
       onSubmit={handleSubmit}
     />

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import "react-quill/dist/quill.snow.css"; // Quill의 기본 테마
 import { useFirestoreGetDocument } from "../../hooks/useFirestore";
-import { message, Spin, Button } from "antd";
+import { message, Spin, Button, Carousel } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const PopupEventDetail = () => {
@@ -50,7 +50,7 @@ const PopupEventDetail = () => {
         </div>
       ) : (
         <div
-          className="relative min-h-screen bg-cover bg-center bg-no-repeat"
+          className="relative min-h-screen bg-cover bg-center bg-no-repeat  flex justify-center items-center"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         >
           {/* 배경 오버레이 */}
@@ -62,42 +62,63 @@ const PopupEventDetail = () => {
             style={{
               borderRadius: window.innerWidth <= 768 ? "0" : "0.5rem",
               padding: window.innerWidth <= 768 ? "1rem" : "2rem",
+              minWidth: window.innerWidth <= 768 ? "200px" : "800px",
             }}
           >
             {/* 제목과 뒤로가기 버튼 */}
             <div
-              className={`${
-                window.innerWidth <= 768
-                  ? "flex flex-col items-start"
-                  : "flex items-center justify-between"
-              } mb-6`}
+              className="flex justify-center items-center "
+              style={{ height: "100px" }}
             >
-              <Button
-                icon={<ArrowLeftOutlined />}
-                onClick={() => navigate(-1)}
-                className="text-gray-700 hover:text-black mb-2 lg:mb-0"
-              >
-                뒤로가기
-              </Button>
-              <h1 className="text-2xl font-bold mb-0 text-center w-full lg:w-auto">
-                {eventInfo?.title}
-              </h1>
+              <div className="flex w-1/5 justify-start items-start ">
+                <Button
+                  icon={<ArrowLeftOutlined />}
+                  onClick={() => navigate(-1)}
+                  className="text-gray-700 hover:text-black mb-2 lg:mb-0"
+                />
+              </div>
+              <div className="flex w-3/5 justify-start lg:justify-center items-center">
+                <h1 className="text-lg lg:text-2xl font-bold mb-0 text-center w-full lg:w-auto">
+                  {eventInfo?.title}
+                </h1>
+              </div>
+              <div className="w-1/5 "></div>
             </div>
 
             {eventInfo?.images?.length > 0 && (
-              <img
-                src={eventInfo?.images[0]}
-                alt={`${eventInfo?.title} 이미지`}
-                className="w-full h-64 object-cover rounded-md mb-4"
-              />
+              <div className="w-full h-64 mb-6 relative">
+                <Carousel
+                  arrows
+                  draggable
+                  infinite={false}
+                  dots={false}
+                  autoplay
+                  autoplaySpeed={3000} // 자동 스크롤: 3초 간격
+                >
+                  {eventInfo.images.map((image, index) => (
+                    <div key={index} className="h-full">
+                      <img
+                        src={image}
+                        alt={`${eventInfo?.title} 이미지 ${index + 1}`}
+                        className="object-cover rounded-md"
+                        style={{ width: "100%", height: "350px" }}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              </div>
             )}
 
             <div
-              className="prose"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(eventInfo?.description),
-              }}
-            />
+              className="prose bg-white p-4 rounded-md shadow-lg relative"
+              style={{ zIndex: 10 }}
+            >
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(eventInfo?.description),
+                }}
+              />
+            </div>
 
             <div className="mt-4 text-sm text-gray-600">
               <p>위치: {eventInfo?.location}</p>
@@ -106,7 +127,6 @@ const PopupEventDetail = () => {
                 날짜: {eventInfo?.startDate} ~ {eventInfo?.endDate}
               </p>
             </div>
-
             {/* 할인 쿠폰 받기 버튼 */}
             <div className="mt-8 text-center">
               <Button
