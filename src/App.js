@@ -18,6 +18,7 @@ import { DeviceProvider } from "./context/DeviceContext";
 import AddPopupEvent from "./components/popupEvent/AddPopupEvent";
 import PopupEventList from "./components/popupEvent/PopupEventList";
 import PopupEventDetail from "./components/popupEvent/PopupEventDetail";
+import EditPopupEvent from "./components/popupEvent/EditPopupEvent";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
 
               <Route path="newpopupevent" element={<AddPopupEvent />} />
               <Route path="popuplist" element={<PopupEventList />} />
+              <Route path="popupeventedit" element={<EditPopupEvent />} />
             </Route>
 
             {/* 잘못된 URL은 홈으로 리다이렉트 */}

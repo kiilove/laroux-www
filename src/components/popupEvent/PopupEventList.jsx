@@ -1,16 +1,22 @@
 // src/components/features/PopupEventList.js
 
 import React, { useEffect, useState } from "react";
-import { useFirestoreQuery } from "../../hooks/useFirestore/index";
-import { message, Spin } from "antd";
-import EventCard from "../features/EventCard";
+import {
+  useFirestoreQuery,
+  useFirestoreDeleteData,
+} from "../../hooks/useFirestore/index";
+import { message, Spin, Table, Button, Modal } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
-const PopupEventList = () => {
+const PopupEventList = ({ onEdit }) => {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const popupEventQuery = useFirestoreQuery();
+  const popupEventDelete = useFirestoreDeleteData();
+  const navigate = useNavigate();
 
-  const fetchedPopupEvents = async () => {
+  const fetchPopupEvents = async () => {
     try {
       setIsLoading(true);
       await popupEventQuery.getDocuments(
@@ -27,27 +33,94 @@ const PopupEventList = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    Modal.confirm({
+      title: "정말로 삭제하시겠습니까?",
+      content: "삭제된 데이터는 복구할 수 없습니다.",
+      okText: "삭제",
+      cancelText: "취소",
+      okType: "danger",
+      onOk: async () => {
+        try {
+          await popupEventDelete.deleteDocument("popupEvents", id);
+          message.success("행사가 삭제되었습니다.");
+          fetchPopupEvents(); // 삭제 후 목록 갱신
+        } catch (error) {
+          message.error("삭제 중 문제가 발생했습니다.");
+        }
+      },
+    });
+  };
+
   useEffect(() => {
-    fetchedPopupEvents();
+    fetchPopupEvents();
   }, []);
+
+  const columns = [
+    {
+      title: "제목",
+      dataIndex: "title",
+      key: "title",
+      render: (text) => <span className="font-bold">{text}</span>,
+    },
+    {
+      title: "시작일",
+      dataIndex: "startDate",
+      key: "startDate",
+    },
+    {
+      title: "종료일",
+      dataIndex: "endDate",
+      key: "endDate",
+    },
+    {
+      title: "위치",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
+      title: "주소",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "작업",
+      key: "actions",
+      render: (_, record) => (
+        <div className="flex space-x-2">
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() =>
+              navigate("/dashboard/popupeventedit", { state: { ...record } })
+            }
+          >
+            수정
+          </Button>
+          <Button
+            type="danger"
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record.id)}
+          >
+            삭제
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <>
-      {isLoading && (
-        <div className="w-full h-screen justify-center items-center bg-white">
+      {isLoading ? (
+        <div className="w-full h-screen flex justify-center items-center bg-white">
           <Spin />
         </div>
-      )}
-      {!isLoading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-          {events.length > 0 ? (
-            events.map((event) => <EventCard key={event.id} event={event} />)
-          ) : (
-            <div className="col-span-full text-center text-gray-600">
-              저장된 행사가 없습니다.
-            </div>
-          )}
-        </div>
+      ) : (
+        <Table
+          dataSource={events.map((event) => ({ ...event, key: event.id }))}
+          columns={columns}
+          pagination={{ pageSize: 10 }}
+        />
       )}
     </>
   );

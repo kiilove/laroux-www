@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Input, DatePicker, Button } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Quill의 기본 테마
@@ -19,6 +19,7 @@ const validate = (values) => {
 };
 
 const PopupEventForm = ({ onSubmit, initialValues }) => {
+  const [formImages, setFormImages] = useState([]);
   const {
     formValues,
     errors,
@@ -62,6 +63,10 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
     },
     [formValues, handleSubmit, onSubmit]
   );
+
+  useEffect(() => {
+    setFormImages([...initialValues?.images, ...tempImages]);
+  }, [tempImages, initialValues?.images]);
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-6">
@@ -156,10 +161,10 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
           onChange={(e) => handleImageAdd(Array.from(e.target.files))}
         />
         <div className="flex flex-wrap gap-2 mt-2">
-          {tempImages.map((file, index) => (
+          {formImages.map((file, index) => (
             <div key={index} className="relative">
               <img
-                src={URL.createObjectURL(file)}
+                src={file || URL.createObjectURL(file)}
                 alt="Preview"
                 className="w-24 h-24 object-cover rounded"
               />
