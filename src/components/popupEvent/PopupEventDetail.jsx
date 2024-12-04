@@ -38,7 +38,7 @@ const PopupEventDetail = () => {
   const backgroundImage =
     eventInfo?.images?.length > 0
       ? eventInfo.images[0]
-      : "https://via.placeholder.com/800x400.png?text=DEFAULT+IMAGE";
+      : "https://firebasestorage.googleapis.com/v0/b/laroux-1a94f.firebasestorage.app/o/assets%2Fdummy%2Fa_luxurious_interior_view_of_a_womens_fashion_clothing_store_inside_a_high-end_department_store_in_s_e824bb68-1580-4ef3-a572-cb21cb57296b.png?alt=media&token=b354b47b-a9a2-41ee-9d7f-af82c5068efa";
 
   return (
     <>

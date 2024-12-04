@@ -19,13 +19,14 @@ const validate = (values) => {
 };
 
 const PopupEventForm = ({ onSubmit, initialValues }) => {
-  const [formImages, setFormImages] = useState([]);
   const {
     formValues,
     errors,
+    images,
     tempImages,
     isSubmitting,
-    uploadLoading,
+    isUploading,
+    uploadProgress,
     handleChange,
     handleDateChange,
     handleImageAdd,
@@ -63,10 +64,6 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
     },
     [formValues, handleSubmit, onSubmit]
   );
-
-  useEffect(() => {
-    setFormImages([...initialValues?.images, ...tempImages]);
-  }, [tempImages, initialValues?.images]);
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-6">
@@ -161,23 +158,35 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
           onChange={(e) => handleImageAdd(Array.from(e.target.files))}
         />
         <div className="flex flex-wrap gap-2 mt-2">
-          {formImages.map((file, index) => (
-            <div key={index} className="relative">
-              <img
-                src={file || URL.createObjectURL(file)}
-                alt="Preview"
-                className="w-24 h-24 object-cover rounded"
-              />
-              <button
-                type="button"
-                onClick={() => handleImageRemove(index)}
-                className="absolute top-0 right-0 text-red-500"
-              >
-                삭제
-              </button>
-            </div>
-          ))}
+          {[...images, ...tempImages].map((file, index) => {
+            const isUploaded = images.includes(file); // 기존 업로드된 이미지 여부
+            const previewUrl = isUploaded
+              ? file // 업로드된 URL 그대로 사용
+              : URL.createObjectURL(file); // 업로드되지 않은 파일의 URL 생성
+
+            return (
+              <div key={index} className="relative">
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  className="w-24 h-24 object-cover rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleImageRemove(index, isUploaded)}
+                  className="absolute top-0 right-0 text-red-500"
+                >
+                  삭제
+                </button>
+              </div>
+            );
+          })}
         </div>
+        {isUploading && (
+          <p className="text-blue-500 text-sm mt-2">
+            업로드 진행 중: {Math.round(uploadProgress)}%
+          </p>
+        )}
       </div>
 
       {/* 제출 버튼 */}
@@ -185,7 +194,7 @@ const PopupEventForm = ({ onSubmit, initialValues }) => {
         <Button
           type="primary"
           htmlType="submit"
-          disabled={isSubmitting || uploadLoading}
+          disabled={isSubmitting || isUploading}
           className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg"
         >
           저장하기
